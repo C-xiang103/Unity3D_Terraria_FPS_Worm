@@ -62,7 +62,9 @@ public class cs_1 : MonoBehaviour
         //Debug.Log(name1 + "OnDisable");
     }
 
-    
+    private void ABS(){
+        printf("ABS is using");
+    }
 
 
 
