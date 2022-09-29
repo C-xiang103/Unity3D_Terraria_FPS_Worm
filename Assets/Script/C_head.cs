@@ -28,6 +28,6 @@ public class C_head : MonoBehaviour
         wait_time = Random.Range(2f, 8f);
         //speed = Random.Range(1f, 10f);
         run = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized;
-        this.transform.LookAt(run);
+        this.transform.LookAt(run+this.transform.position);
     }
 }
