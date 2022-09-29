@@ -5,20 +5,16 @@ using UnityEngine;
 public class C_head : MonoBehaviour
 {
     private Transform head;
-    private float go_x, go_y, go_z;
     private Vector3 run;
     private float wait_time;
     private float speed;
-    // Start is called before the first frame update
     void Start()
     {
         head = this.transform;
-        run = new Vector3(go_x, go_y, go_z);
         wait_time = 0f;
         speed = 1f;
     }
 
-    // Update is called once per frame
     void Update()
     {
         head.position += run * Time.deltaTime * speed;
