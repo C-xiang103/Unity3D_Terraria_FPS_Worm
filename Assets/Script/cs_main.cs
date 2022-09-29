@@ -6,27 +6,36 @@ public class cs_main : MonoBehaviour
 {
     public float speed;
     private float rotatemax = 500f;
-    private float rotatemin = 10f;
-    private float booltime;
+    private float rotatemin = 100f;
+    private bool is_x_right;
     // Start is called before the first frame update
     void Start()
     {
         speed = rotatemax;
-        booltime = 0;
+        is_x_right = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(booltime<=3)
+        this.transform.Rotate(0,Time.deltaTime*speed,0);
+    }
+
+    private void FixedUpdate()
+    {
+        if(is_x_right)
         {
-            booltime += Time.deltaTime;
+            if (speed < rotatemax)
+                speed += Time.fixedDeltaTime * 100;
+            else
+                is_x_right = false;
         }
         else
         {
-            booltime = 0;
-            speed = Random.Range(rotatemin, rotatemax);
+            if (speed > rotatemin)
+                speed -= Time.fixedDeltaTime * 100;
+            else
+                is_x_right = true;
         }
-        this.transform.Rotate(0,Time.deltaTime*speed,0);
     }
 }
