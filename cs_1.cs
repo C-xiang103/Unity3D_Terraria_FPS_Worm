@@ -61,7 +61,10 @@ public class cs_1 : MonoBehaviour
         //Debug.Log(name1 + "OnDisable");
     }
 
-    
+    private void init()
+    {
+        //just a test project
+    }
 
 
 
