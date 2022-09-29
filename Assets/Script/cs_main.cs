@@ -8,16 +8,13 @@ public class cs_main : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        speed = 30;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-            print("Key.Space is Down");
-        if (Input.GetKeyUp(KeyCode.Space))
-            print("Key.Space is Up");
+        this.transform.Rotate(0,Time.deltaTime*speed,0);
     }
 
     private void FixedUpdate()
