@@ -15,10 +15,6 @@ public class C_head : MonoBehaviour
         HeadSpeed = 5f;
     }
 
-    void Update()
-    {
-
-    }
 
     private void FixedUpdate()
     {
