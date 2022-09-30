@@ -7,6 +7,7 @@ public class C_body : MonoBehaviour
     private Queue<Vector3> _HistoryPoints;
     private Queue<Quaternion> _HistoryRotas;
     public GameObject FrontBody;
+    private float _BodysDistance;
 
     private void Start()
     {
@@ -14,6 +15,7 @@ public class C_body : MonoBehaviour
         _HistoryRotas = new Queue<Quaternion>();
         _HistoryPoints.Clear();
         _HistoryRotas.Clear();
+        _BodysDistance = 1.5f;
     }
 
     private void FixedUpdate()
@@ -29,7 +31,7 @@ public class C_body : MonoBehaviour
         Vector3 NextPoint = transform.position;
         Quaternion NextRota = transform.rotation;
 
-        while((FrontBody.transform.position - NextPoint).sqrMagnitude>1.2f && _HistoryPoints.Count > 0 && _HistoryRotas.Count > 0)
+        while((FrontBody.transform.position - NextPoint).sqrMagnitude > _BodysDistance && _HistoryPoints.Count > 0 && _HistoryRotas.Count > 0)
         {
              NextPoint = _HistoryPoints.Dequeue();
              NextRota = _HistoryRotas.Dequeue();
