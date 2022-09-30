@@ -18,6 +18,11 @@ public class C_head : MonoBehaviour
 
     private void FixedUpdate()
     {
+        MoveHead();
+    }
+
+    public void MoveHead()
+    {
         Quaternion rotate = Quaternion.LookRotation(_RunDirection);
         if (Vector3.Angle(_RunDirection, transform.forward) > 0.1f)
             transform.rotation = Quaternion.Slerp(transform.rotation, rotate, AngleSpeed);
@@ -32,7 +37,5 @@ public class C_head : MonoBehaviour
         _WaitTime = Random.Range(2f, 8f);
         HeadSpeed = Random.Range(1f, 10f);
         _RunDirection = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized;
-
     }
-
 }
