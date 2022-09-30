@@ -4,34 +4,33 @@ using UnityEngine;
 
 public class C_body : MonoBehaviour
 {
-    private Queue<Vector3> StoragePoint;
-    private Queue<Quaternion> StorageRota;
+    private Queue<Vector3> _StoragePoint;
+    private Queue<Quaternion> _StorageRota;
     public GameObject FrontBody;
-    private Transform GoToNextPoint;
 
     private void Start()
     {
-        StoragePoint = new Queue<Vector3>();
-        StorageRota = new Queue<Quaternion>();
-        StoragePoint.Clear();
-        StorageRota.Clear();
+        _StoragePoint = new Queue<Vector3>();
+        _StorageRota = new Queue<Quaternion>();
+        _StoragePoint.Clear();
+        _StorageRota.Clear();
     }
 
     private void FixedUpdate()
     {
-        StoragePoint.Enqueue(FrontBody.transform.position);
-        StorageRota.Enqueue(FrontBody.transform.rotation);
+        _StoragePoint.Enqueue(FrontBody.transform.position);
+        _StorageRota.Enqueue(FrontBody.transform.rotation);
 
-        Vector3 NextPoint = this.transform.position;
-        Quaternion NextRota = this.transform.rotation;
+        Vector3 NextPoint = transform.position;
+        Quaternion NextRota = transform.rotation;
 
-        while((FrontBody.transform.position - NextPoint).sqrMagnitude>1.2f && StoragePoint.Count > 0 && StorageRota.Count > 0)
+        while((FrontBody.transform.position - NextPoint).sqrMagnitude>1.2f && _StoragePoint.Count > 0 && _StorageRota.Count > 0)
         {
-             NextPoint = StoragePoint.Dequeue();
-             NextRota = StorageRota.Dequeue();
+             NextPoint = _StoragePoint.Dequeue();
+             NextRota = _StorageRota.Dequeue();
         }
 
-        this.transform.position = NextPoint;
-        this.transform.rotation = NextRota;
+        transform.position = NextPoint;
+        transform.rotation = NextRota;
     }
 }
