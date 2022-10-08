@@ -15,7 +15,7 @@ public class C_body : MonoBehaviour
         _HistoryRotas = new Queue<Quaternion>();
         _HistoryPoints.Clear();
         _HistoryRotas.Clear();
-        _BodysDistance = 1.5f;
+        _BodysDistance = 2f;
     }
 
     private void FixedUpdate()
