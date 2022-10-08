@@ -36,17 +36,27 @@ public class C_head : MonoBehaviour
 
     private void FixedUpdate()
     {
+        RotateHead();
         MoveHead();
+        HasNewPosition();
+        OverRange();
     }
 
-    public void MoveHead()
+    public void RotateHead()
     {
         Quaternion rotate = Quaternion.LookRotation(_runDirection);
         if (Vector3.Angle(_runDirection, transform.forward) > _minRotate)
             transform.rotation = Quaternion.Slerp(transform.rotation, rotate, _angleSpeed);
+    }
 
+    public void MoveHead()
+    {
         transform.position += transform.forward * Time.deltaTime * _headSpeed;
-        
+        _headSpeed += _headSpeed > _minSpeed ? (-1f) * transform.forward.y * 0.04f : 0f;
+    }
+
+    public void HasNewPosition()
+    {
         if (_waitTime >= 0)
         {
             _waitTime -= Time.fixedDeltaTime;
@@ -55,6 +65,14 @@ public class C_head : MonoBehaviour
         _waitTime = Random.Range(_keeprunminTime, _keeprunmaxTime);
         _headSpeed = Random.Range(_minSpeed, _maxSpeed);
         _runDirection = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized;
+    }
+
+    public void OverRange()
+    {
+        if((transform.position-_centerPoint).sqrMagnitude>2500f)
+        {
+            _runDirection = (_centerPoint - transform.position).normalized;
+        }    
     }
 
     private void OnTriggerEnter()
