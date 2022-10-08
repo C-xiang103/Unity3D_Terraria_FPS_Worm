@@ -5,27 +5,27 @@ using UnityEngine;
 public class C_head : MonoBehaviour
 {
     [SerializeField] 
-    private Vector3 _RunDirection;
-    private float _WaitTime;
-    private float _HeadSpeed;
-    private float _AngleSpeed;
-    private float _MinRotate;
-    private float _SpeedMax;
-    private float _SpeedMin;
-    private float _KeepRunTimeMin;
-    private float _KeepRunTimeMax;
-    public GameObject CenterPoint;
+    private Vector3 _runDirection;
+    private float _waitTime;
+    private float _headSpeed;
+    private float _angleSpeed;
+    private float _minRotate;
+    private float _maxSpeed;
+    private float _minSpeed;
+    private float _keeprunminTime;
+    private float _keeprunmaxTime;
+    public GameObject centerPoint;
 
     void Start()
     {
-        _WaitTime = 0f;
-        _HeadSpeed = 5f;
-        _AngleSpeed = 0.01f;
-        _MinRotate = 0.1f;
-        _SpeedMax = 15f;
-        _SpeedMin = 5f;
-        _KeepRunTimeMax = 8f;
-        _KeepRunTimeMin = 2f;
+        _waitTime = 0f;
+        _headSpeed = 5f;
+        _angleSpeed = 0.01f;
+        _minRotate = 0.1f;
+        _maxSpeed = 15f;
+        _minSpeed = 5f;
+        _keeprunmaxTime = 8f;
+        _keeprunminTime = 2f;
     }
 
 
@@ -36,25 +36,25 @@ public class C_head : MonoBehaviour
 
     public void MoveHead()
     {
-        Quaternion rotate = Quaternion.LookRotation(_RunDirection);
-        if (Vector3.Angle(_RunDirection, transform.forward) > _MinRotate)
-            transform.rotation = Quaternion.Slerp(transform.rotation, rotate, _AngleSpeed);
+        Quaternion rotate = Quaternion.LookRotation(_runDirection);
+        if (Vector3.Angle(_runDirection, transform.forward) > _minRotate)
+            transform.rotation = Quaternion.Slerp(transform.rotation, rotate, _angleSpeed);
 
-        transform.position += transform.forward * Time.deltaTime * _HeadSpeed;
+        transform.position += transform.forward * Time.deltaTime * _headSpeed;
         
-        if (_WaitTime >= 0)
+        if (_waitTime >= 0)
         {
-            _WaitTime -= Time.fixedDeltaTime;
+            _waitTime -= Time.fixedDeltaTime;
             return;
         }
-        _WaitTime = Random.Range(_KeepRunTimeMin, _KeepRunTimeMax);
-        _HeadSpeed = Random.Range(_SpeedMin, _SpeedMax);
-        _RunDirection = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized;
+        _waitTime = Random.Range(_keeprunminTime, _keeprunmaxTime);
+        _headSpeed = Random.Range(_minSpeed, _maxSpeed);
+        _runDirection = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized;
     }
 
     private void OnTriggerEnter()
     {
-        _RunDirection = (CenterPoint.transform.position-transform.position).normalized;
-        _WaitTime = 5;
+        _runDirection = (centerPoint.transform.position-transform.position).normalized;
+        _waitTime = 5;
     }
 }
