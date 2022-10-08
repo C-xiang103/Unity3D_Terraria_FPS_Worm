@@ -20,8 +20,8 @@ public class C_head : MonoBehaviour
         _HeadSpeed = 5f;
         _AngleSpeed = 0.01f;
         _MinRotate = 0.1f;
-        _SpeedMax = 10f;
-        _SpeedMin = 1f;
+        _SpeedMax = 20f;
+        _SpeedMin = 10f;
         _KeepRunTimeMax = 8f;
         _KeepRunTimeMin = 2f;
     }

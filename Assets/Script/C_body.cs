@@ -23,6 +23,11 @@ public class C_body : MonoBehaviour
         MoveBodyByPrevious();
     }
 
+    private void Update()
+    {
+        
+    }
+
     public void MoveBodyByPrevious()
     {
         _HistoryPoints.Enqueue(FrontBody.transform.position);
