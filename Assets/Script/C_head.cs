@@ -1,9 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class C_head : MonoBehaviour
 {
+    /// <summary>
+    /// BossÍ·²¿ÒÆ¶¯
+    /// </summary>
     [SerializeField] 
     private Vector3 _runDirection;
     private float _waitTime;
@@ -14,7 +18,7 @@ public class C_head : MonoBehaviour
     private float _minSpeed;
     private float _keeprunminTime;
     private float _keeprunmaxTime;
-    public GameObject centerPoint;
+    private Vector3 _centerPoint;
 
     void Start()
     {
@@ -26,6 +30,7 @@ public class C_head : MonoBehaviour
         _minSpeed = 5f;
         _keeprunmaxTime = 8f;
         _keeprunminTime = 2f;
+        _centerPoint = new Vector3(5.3f, 12.2f, 8.5f);
     }
 
 
@@ -54,7 +59,7 @@ public class C_head : MonoBehaviour
 
     private void OnTriggerEnter()
     {
-        _runDirection = (centerPoint.transform.position-transform.position).normalized;
+        _runDirection = (_centerPoint-transform.position).normalized;
         _waitTime = 5;
     }
 }

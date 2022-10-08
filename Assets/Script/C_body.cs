@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class C_body : MonoBehaviour
 {
+    /// <summary>
+    /// Boss…ÌÃÂ∏˙ÀÊ“∆∂Ø
+    /// </summary>
     private Queue<Vector3> _HistoryPoints;
     private Queue<Quaternion> _HistoryRotas;
     public GameObject FrontBody;
@@ -21,11 +24,6 @@ public class C_body : MonoBehaviour
     private void FixedUpdate()
     {
         MoveBodyByPrevious();
-    }
-
-    private void Update()
-    {
-        
     }
 
     public void MoveBodyByPrevious()

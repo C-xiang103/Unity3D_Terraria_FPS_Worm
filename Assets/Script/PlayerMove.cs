@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class PlayerMove : MonoBehaviour
 {
+    /// <summary>
+    /// 玩家移动及视角
+    /// </summary>
     public GameObject playerView;
     private float angularSpeed;
     private float horizontalRotateSensitivity;
@@ -17,10 +20,10 @@ public class PlayerMove : MonoBehaviour
         angularSpeed = 1f;
         horizontalRotateSensitivity = 100f;
         verticalRotateSensitivity = 100f;
-        maxDepressionAngle = 30f;
+        maxDepressionAngle = 60f;
         maxElevationAngle = 80f;
     }
-    private void FixedUpdate()
+    private void Update()
     {
         View();
     }
