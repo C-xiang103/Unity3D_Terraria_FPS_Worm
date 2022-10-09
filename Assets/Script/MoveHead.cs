@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class C_head : MonoBehaviour
+public class MoveHead : MonoBehaviour
 {
     /// <summary>
     /// BossÍ·²¿ÒÆ¶¯
@@ -41,7 +41,7 @@ public class C_head : MonoBehaviour
     private void FixedUpdate()
     {
         RotateHead();
-        MoveHead();
+        RunHead();
         HasNewPosition();
         OverRange();
         _centerPoint=GameObject.Find("Player").transform.position;
@@ -54,7 +54,7 @@ public class C_head : MonoBehaviour
             transform.rotation = Quaternion.Slerp(transform.rotation, rotate, _angleSpeed);
     }
 
-    public void MoveHead()
+    public void RunHead()
     {
         transform.position += transform.forward * Time.fixedDeltaTime * _headSpeed;
         _headSpeed += _headSpeed > _minSpeed ? (-1f) * transform.forward.y * 0.1f : 0f;

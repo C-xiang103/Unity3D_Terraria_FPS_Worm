@@ -32,7 +32,7 @@ public class Division : MonoBehaviour
             int i = (int)Random.Range(-0.5f, _maxLength-0.5f);
             i = i == -1 ? 0 : i;
             GameObject newHead = Instantiate(newheadPreform, _allBodys[i].transform.position, _allBodys[i].transform.rotation);
-            _allBodys[i].GetComponent<C_body>().FrontBody = newHead;
+            _allBodys[i].GetComponent<MoveBody>().FrontBody = newHead;
             _maxLength--;
             _allBodys[i] = _allBodys[_maxLength];
         }

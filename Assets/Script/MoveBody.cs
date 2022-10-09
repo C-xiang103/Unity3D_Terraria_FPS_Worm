@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class C_body : MonoBehaviour
+public class MoveBody : MonoBehaviour
 {
     /// <summary>
     /// Boss…ÌÃÂ∏˙ÀÊ“∆∂Ø
@@ -16,8 +16,6 @@ public class C_body : MonoBehaviour
     {
         _HistoryPoints = new Queue<Vector3>();
         _HistoryRotas = new Queue<Quaternion>();
-        _HistoryPoints.Clear();
-        _HistoryRotas.Clear();
         _BodysDistance = 2f;
     }
 

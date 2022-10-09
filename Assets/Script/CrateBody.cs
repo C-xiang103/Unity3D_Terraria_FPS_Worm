@@ -9,15 +9,15 @@ public class CrateBody : MonoBehaviour
     /// </summary>
     public GameObject bodyPreform;
     public int bodyLength;
-    public GameObject theHead;
+    public GameObject headPreform;
     void Start()
     {
-        bodyLength = 30;
+        bodyLength = GameObject.Find("Division").GetComponent<Division>()._allBodys.Length;
         for(int i=0;i<bodyLength;i++)
         {
             GameObject nextBody = Instantiate(bodyPreform);
-            nextBody.GetComponent<C_body>().FrontBody = theHead;
-            theHead = nextBody;
+            nextBody.GetComponent<MoveBody>().FrontBody = headPreform;
+            headPreform = nextBody;
             GameObject.Find("Division").GetComponent<Division>()._allBodys[i] = nextBody;
         }
     }
