@@ -16,7 +16,7 @@ public class MoveBody : MonoBehaviour
     {
         _historyPoints = new Queue<Vector3>();
         _historyRotas = new Queue<Quaternion>();
-        _twoBodyDistance = 2f;
+        _twoBodyDistance = 2.7f;
     }
 
     private void FixedUpdate()
