@@ -7,15 +7,15 @@ public class Division : MonoBehaviour
     /// <summary>
     /// Boss∑÷¡—
     /// </summary>
-    public GameObject headPreform;
-    public GameObject[] allBody;
+    public GameObject HeadPreform;
+    public GameObject[] AllBody;
     private int _bodyMaxLength;
     private float _waitTime;
 
     private void Awake()
     {
-        allBody = new GameObject[30];
-        _bodyMaxLength = allBody.Length;
+        AllBody = new GameObject[30];
+        _bodyMaxLength = AllBody.Length;
     }
 
     private void Start()
@@ -30,10 +30,10 @@ public class Division : MonoBehaviour
         {
             _waitTime = Random.Range(1f, 5f);
             int i = Random.Range(0, _bodyMaxLength);
-            GameObject newHead = Instantiate(headPreform, allBody[i].transform.position, allBody[i].transform.rotation);
-            allBody[i].GetComponent<MoveBody>().previousBody = newHead;
+            GameObject newHead = Instantiate(HeadPreform, AllBody[i].transform.position, AllBody[i].transform.rotation);
+            AllBody[i].GetComponent<MoveBody>().PreviousBody = newHead;
             _bodyMaxLength--;
-            allBody[i] = allBody[_bodyMaxLength];
+            AllBody[i] = AllBody[_bodyMaxLength];
         }
     }
 }

@@ -7,7 +7,7 @@ public class PlayerMove : MonoBehaviour
     /// <summary>
     /// 玩家移动及视角
     /// </summary>
-    public GameObject playerView;
+    public GameObject PlayerView;
     private float _angularSpeed;
     private float _horizontalRotateSensitivity;
     private float _verticalRotateSensitivity;
@@ -39,9 +39,8 @@ public class PlayerMove : MonoBehaviour
     {
 
         //当前垂直角度
-        double VerticalAngle = playerView.transform.eulerAngles.x;
+        double verticalAngle = PlayerView.transform.eulerAngles.x;
 
-        //通过鼠标获取竖直、水平轴的值，范围在-1到1
         float h = Input.GetAxis("Mouse X");
         float v = Input.GetAxis("Mouse Y") * -1;
 
@@ -49,13 +48,13 @@ public class PlayerMove : MonoBehaviour
         transform.Rotate(Vector3.up * h * Time.deltaTime * _angularSpeed * _horizontalRotateSensitivity);
 
         //计算本次旋转后，竖直方向上的欧拉角
-        double targetAngle = VerticalAngle + v * Time.deltaTime * _angularSpeed * _verticalRotateSensitivity;
+        double targetAngle = verticalAngle + v * Time.deltaTime * _angularSpeed * _verticalRotateSensitivity;
 
         //竖直方向视角限制
-        if (targetAngle > _maxDepressionAngle && targetAngle < 360 - _maxElevationAngle) return;
+        if (OverViewRange(targetAngle)) return;
 
         //摄像机竖直方向上旋转
-        playerView.transform.Rotate(Vector3.right * v * Time.deltaTime * _angularSpeed * _verticalRotateSensitivity);
+        PlayerView.transform.Rotate(Vector3.right * v * Time.deltaTime * _angularSpeed * _verticalRotateSensitivity);
     }
 
     void Move()
@@ -63,7 +62,6 @@ public class PlayerMove : MonoBehaviour
         float v = Input.GetAxis("Vertical");
         float h = Input.GetAxis("Horizontal");
 
-        //按照矢量移动一段距离
         transform.Translate(Vector3.forward * v * 0.02f * _moveSpeed);
         transform.Translate(Vector3.right * h * 0.02f * _moveSpeed);
     }
@@ -72,5 +70,10 @@ public class PlayerMove : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+    }
+
+    bool OverViewRange(double targetAngle)
+    {
+        return targetAngle > _maxDepressionAngle && targetAngle < 360 - _maxElevationAngle;
     }
 }

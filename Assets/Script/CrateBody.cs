@@ -7,18 +7,18 @@ public class CrateBody : MonoBehaviour
     /// <summary>
     /// 初始化创建Boss身体
     /// </summary>
-    public GameObject bodyPreform;
-    public int allBodyLength;
-    public GameObject newBodyHead;
+    public GameObject BodyPreform;
+    public int AllBodyLength;
+    public GameObject NewBodyHead;
     void Start()
     {
-        allBodyLength = GameObject.Find("Division").GetComponent<Division>().allBody.Length;
-        for(int i=0;i<allBodyLength;i++)
+        AllBodyLength = GameObject.Find("Division").GetComponent<Division>().AllBody.Length;
+        for(int i=0;i<AllBodyLength;i++)
         {
-            GameObject nextBody = Instantiate(bodyPreform);
-            nextBody.GetComponent<MoveBody>().previousBody = newBodyHead;
-            newBodyHead = nextBody;
-            GameObject.Find("Division").GetComponent<Division>().allBody[i] = nextBody;
+            GameObject nextBody = Instantiate(BodyPreform);
+            nextBody.GetComponent<MoveBody>().PreviousBody = NewBodyHead;
+            NewBodyHead = nextBody;
+            GameObject.Find("Division").GetComponent<Division>().AllBody[i] = nextBody;
         }
     }
 }

@@ -2589,9 +2589,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91c6c75d0bef0344f8c9a8035d6d41f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bodyPreform: {fileID: 1038806166608455037, guid: ff4cda095f4917741b583c2efdf3c667, type: 3}
-  bodyLength: 10
-  headPreform: {fileID: 2039673704}
+  BodyPreform: {fileID: 1038806166608455037, guid: ff4cda095f4917741b583c2efdf3c667, type: 3}
+  AllBodyLength: 0
+  NewBodyHead: {fileID: 2039673704}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -5577,8 +5577,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3de25ebe893bc864aaef0d18211a7326, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  newheadPreform: {fileID: 8164806819716833145, guid: d362cb98adddeee4c8c6d379c753dc5f, type: 3}
-  _allBodys: []
+  HeadPreform: {fileID: 8164806819716833145, guid: d362cb98adddeee4c8c6d379c753dc5f, type: 3}
+  AllBody: []
 --- !u!4 &1483864862
 Transform:
   m_ObjectHideFlags: 0
@@ -7352,7 +7352,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6d9f1f4e1a6e594a8ddf145c43556bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerView: {fileID: 839631582}
+  PlayerView: {fileID: 839631582}
 --- !u!136 &1951983334
 CapsuleCollider:
   m_ObjectHideFlags: 0
