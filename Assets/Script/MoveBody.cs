@@ -7,16 +7,16 @@ public class MoveBody : MonoBehaviour
     /// <summary>
     /// Boss…ÌÃÂ∏˙ÀÊ“∆∂Ø
     /// </summary>
-    private Queue<Vector3> _HistoryPoints;
-    private Queue<Quaternion> _HistoryRotas;
-    public GameObject FrontBody;
-    private float _BodysDistance;
+    private Queue<Vector3> _historyPoints;
+    private Queue<Quaternion> _historyRotas;
+    public GameObject previousBody;
+    private float _twoBodyDistance;
 
     private void Start()
     {
-        _HistoryPoints = new Queue<Vector3>();
-        _HistoryRotas = new Queue<Quaternion>();
-        _BodysDistance = 2f;
+        _historyPoints = new Queue<Vector3>();
+        _historyRotas = new Queue<Quaternion>();
+        _twoBodyDistance = 2f;
     }
 
     private void FixedUpdate()
@@ -26,16 +26,16 @@ public class MoveBody : MonoBehaviour
 
     public void MoveBodyByPrevious()
     {
-        _HistoryPoints.Enqueue(FrontBody.transform.position);
-        _HistoryRotas.Enqueue(FrontBody.transform.rotation);
+        _historyPoints.Enqueue(previousBody.transform.position);
+        _historyRotas.Enqueue(previousBody.transform.rotation);
 
         Vector3 NextPoint = transform.position;
         Quaternion NextRota = transform.rotation;
 
-        while((FrontBody.transform.position - NextPoint).sqrMagnitude > _BodysDistance && _HistoryPoints.Count > 0 && _HistoryRotas.Count > 0)
+        while((previousBody.transform.position - NextPoint).sqrMagnitude > _twoBodyDistance && _historyPoints.Count > 0 && _historyRotas.Count > 0)
         {
-             NextPoint = _HistoryPoints.Dequeue();
-             NextRota = _HistoryRotas.Dequeue();
+             NextPoint = _historyPoints.Dequeue();
+             NextRota = _historyRotas.Dequeue();
         }
 
         transform.position = NextPoint;

@@ -19,8 +19,8 @@ public class PlayerMove : MonoBehaviour
     {
         SetCursorToCentre();
         _angularSpeed = 1f;
-        _horizontalRotateSensitivity = 100f;
-        _verticalRotateSensitivity = 100f;
+        _horizontalRotateSensitivity = 150f;
+        _verticalRotateSensitivity = 200f;
         _maxDepressionAngle = 60f;
         _maxElevationAngle = 80f;
         _moveSpeed = 5f;

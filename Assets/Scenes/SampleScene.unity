@@ -2591,7 +2591,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bodyPreform: {fileID: 1038806166608455037, guid: ff4cda095f4917741b583c2efdf3c667, type: 3}
   bodyLength: 10
-  theHead: {fileID: 2039673704}
+  headPreform: {fileID: 2039673704}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -8173,7 +8173,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8164806819716833145, guid: d362cb98adddeee4c8c6d379c753dc5f, type: 3}
       propertyPath: m_Name
-      value: Head
+      value: FirstHead
       objectReference: {fileID: 0}
     - target: {fileID: 8164806819716833147, guid: d362cb98adddeee4c8c6d379c753dc5f, type: 3}
       propertyPath: centerPoint
