@@ -1,49 +1,56 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MoveBody : MonoBehaviour
+namespace BigBoss
 {
-    /// <summary>
-    /// Boss身体跟随移动
-    /// </summary>
-    private Queue<Vector3> _historyPoints;
-    private Queue<Quaternion> _historyRotas;
-    public GameObject PreviousBody;
-    private float _twoBodyDistance;
 
-    private void Start()
+    public class MoveBody : MonoBehaviour
     {
-        _historyPoints = new Queue<Vector3>();
-        _historyRotas = new Queue<Quaternion>();
-        _twoBodyDistance = 2.7f;
-    }
+        /// <summary>
+        /// Boss身体跟随移动
+        /// </summary>
+        private Queue<Vector3> _historyPoints = new Queue<Vector3>();
+        private Queue<Quaternion> _historyRotas = new Queue<Quaternion>();
+        [NonSerialized]
+        public GameObject PreviousBody;
+        private float _twoBodyDistance;
+        private Transform _transform;
 
-    private void FixedUpdate()
-    {
-        MoveBodyByPrevious();
-    }
-
-    public void MoveBodyByPrevious()
-    {
-        _historyPoints.Enqueue(PreviousBody.transform.position);
-        _historyRotas.Enqueue(PreviousBody.transform.rotation);
-
-        Vector3 NextPoint = transform.position;
-        Quaternion NextRota = transform.rotation;
-
-        while(NeedUpDatePoint(NextPoint))
+        private void Start()
         {
-             NextPoint = _historyPoints.Dequeue();
-             NextRota = _historyRotas.Dequeue();
+            _twoBodyDistance = 2.7f;
+            _transform = transform;
         }
 
-        transform.position = NextPoint;
-        transform.rotation = NextRota;
+        private void FixedUpdate()
+        {
+            MoveBodyByPrevious();
+        }
+
+        private void MoveBodyByPrevious()
+        {
+            _historyPoints.Enqueue(PreviousBody.transform.position);
+            _historyRotas.Enqueue(PreviousBody.transform.rotation);
+
+            Vector3 NextPoint = _transform.position;
+            Quaternion NextRota = _transform.rotation;
+
+            while (NeedUpDatePoint(NextPoint))
+            {
+                NextPoint = _historyPoints.Dequeue();
+                NextRota = _historyRotas.Dequeue();
+            }
+
+            _transform.position = NextPoint;
+            _transform.rotation = NextRota;
+        }
+
+        bool NeedUpDatePoint(Vector3 NextPoint)
+        {
+            return (PreviousBody.transform.position - NextPoint).sqrMagnitude > _twoBodyDistance && _historyPoints.Count > 0 && _historyRotas.Count > 0;
+        }
     }
 
-    bool NeedUpDatePoint(Vector3 NextPoint)
-    {
-        return (PreviousBody.transform.position - NextPoint).sqrMagnitude > _twoBodyDistance && _historyPoints.Count > 0 && _historyRotas.Count > 0;
-    }
 }

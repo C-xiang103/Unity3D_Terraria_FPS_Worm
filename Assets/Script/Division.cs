@@ -2,38 +2,45 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Division : MonoBehaviour
+namespace BigBoss
 {
-    /// <summary>
-    /// Boss∑÷¡—
-    /// </summary>
-    public GameObject HeadPreform;
-    public GameObject[] AllBody;
-    private int _bodyMaxLength;
-    private float _waitTime;
 
-    private void Awake()
+    public class Division : MonoBehaviour
     {
-        AllBody = new GameObject[30];
-        _bodyMaxLength = AllBody.Length;
-    }
+        /// <summary>
+        /// Boss∑÷¡—
+        /// </summary>
 
-    private void Start()
-    {
-        _waitTime = 2f;
-    }
+        [SerializeField] private GameObject HeadPreform;
+        // private GameObject[] CrateBody.AllBody;;
+        private int _bodyMaxLength;
+        private float _waitTime;
 
-    private void FixedUpdate()
-    {
-        _waitTime -= 0.02f;
-        if (_waitTime < 0 && _bodyMaxLength > 0)
+
+        private void Start()
         {
-            _waitTime = Random.Range(1f, 5f);
-            int i = Random.Range(0, _bodyMaxLength);
-            GameObject newHead = Instantiate(HeadPreform, AllBody[i].transform.position, AllBody[i].transform.rotation);
-            AllBody[i].GetComponent<MoveBody>().PreviousBody = newHead;
-            _bodyMaxLength--;
-            AllBody[i] = AllBody[_bodyMaxLength];
+            _waitTime = 2f;
+            _bodyMaxLength = CrateBody.AllBody.Length;
+        }
+
+        private void Update()
+        {
+            DoDivision();
+        }
+
+        private void DoDivision()
+        {
+            _waitTime -= Time.deltaTime;
+            if (_waitTime < 0 && _bodyMaxLength > 0)
+            {
+                _waitTime = Random.Range(1f, 5f);
+                int i = Random.Range(1, _bodyMaxLength);
+                GameObject newHead = Instantiate(HeadPreform, CrateBody.AllBody[i].transform.position, CrateBody.AllBody[i].transform.rotation);
+                CrateBody.AllBody[i].GetComponent<MoveBody>().PreviousBody = newHead;
+                _bodyMaxLength--;
+                CrateBody.AllBody[i] = CrateBody.AllBody[_bodyMaxLength];
+            }
         }
     }
+
 }
