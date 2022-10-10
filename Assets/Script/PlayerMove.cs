@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.NetworkInformation;
 using UnityEngine;
 
 namespace BigBoss
@@ -13,21 +14,33 @@ namespace BigBoss
         private static PlayerMove _playerMove;
         public static PlayerMove GetPlayerMove => _playerMove;
         [SerializeField] private GameObject PlayerView;
+
         private float _angularSpeed = 1f;
-        private float _horizontalRotateSensitivity = 150f;
-        private float _verticalRotateSensitivity = 200f;
+        private float _horizontalRotateSensitivity = 1000f;
+        private float _verticalRotateSensitivity = 600f;
         private float _maxDepressionAngle = 60f;
         private float _maxElevationAngle = 80f;
         private float _moveSpeed = 5f;
+        private Rigidbody _rigidbody;
 
-        private void Start()
+        private float _jumpPower = 8f;
+        private float _jumpWaitTime = 1.4f;
+        private float _actualJumpTime;
+
+        private void Awake()
         {
             _playerMove = this;
+        }
+        private void Start()
+        {
             SetCursorToCentre();
+            _rigidbody = GetComponent<Rigidbody>();
+            _actualJumpTime = _jumpWaitTime;
         }
         private void Update()
         {
             View();
+            Jump();
         }
 
         private void FixedUpdate()
@@ -35,7 +48,7 @@ namespace BigBoss
             Move();
         }
 
-        void View()
+        private void View()
         {
 
             //当前垂直角度
@@ -57,7 +70,7 @@ namespace BigBoss
             PlayerView.transform.Rotate(Vector3.right * v * Time.deltaTime * _angularSpeed * _verticalRotateSensitivity);
         }
 
-        void Move()
+        private void Move()
         {
             float v = Input.GetAxis("Vertical");
             float h = Input.GetAxis("Horizontal");
@@ -66,13 +79,23 @@ namespace BigBoss
             transform.Translate(Vector3.right * h * 0.02f * _moveSpeed);
         }
 
-        void SetCursorToCentre()
+        private void Jump()
+        {
+            _actualJumpTime = _actualJumpTime > 0 ? _actualJumpTime - Time.deltaTime : _actualJumpTime;
+            if (Input.GetKey(KeyCode.Space)&& _actualJumpTime<0f)
+            {
+                _rigidbody.AddForce(Vector3.up * _jumpPower, ForceMode.Impulse);
+                _actualJumpTime = _jumpWaitTime;
+            }
+        }
+
+        private void SetCursorToCentre()
         {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }
 
-        bool OverViewRange(double targetAngle)
+        private bool OverViewRange(double targetAngle)
         {
             return targetAngle > _maxDepressionAngle && targetAngle < 360 - _maxElevationAngle;
         }
