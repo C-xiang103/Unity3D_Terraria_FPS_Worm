@@ -20,11 +20,11 @@ namespace BigBoss
         private Transform _transform;//自身组件
 
         [NonSerialized] public bool BeShoot;
-        private int _bodyHp = 4;
+        [SerializeField] private int _bodyHp = 3;
         [SerializeField] private GameObject _headPrefab;//头部预制体，父节点被摧毁，创建头为父节点
 
         private const float AllChangeColor = 0.3f;//色彩变化总值
-        private float _changeColor;//色彩改变单位量
+        private float _changeColor;//色彩变化最小单位量
 
         private void Start()
         {

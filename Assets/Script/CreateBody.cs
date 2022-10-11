@@ -10,19 +10,19 @@ namespace BigBoss
     public class CreateBody : MonoBehaviour
     {
         /// <summary>
-        /// 创建身体
+        /// 创建身体，显示ui
         /// </summary>
         [SerializeField] private GameObject _bodyPrefab;//身体预制体
         [SerializeField] private GameObject _firstHead;//第一个头
         private GameObject _newBodyHead;//一节新身体的头
-        private const int MaxBodyCount = 3;//设置Boss初始长度
+        private const int MaxBodyCount = 30;//设置Boss初始长度
         [NonSerialized] public static int BossLength;//Boss当前长度
-        [SerializeField] private GameObject _hpObject;//生命值
+        [SerializeField] private GameObject _hpObject;//生命值显示
         private Text _hpText;//生命值文本
         private float _allTime = 0f;//游戏时长
         private bool _gameOver = false;//击败Boss
-        [SerializeField] private AudioSource _audioSource;
-        [SerializeField] private AudioClip _audioClip;
+        [SerializeField] private AudioSource _audioSource;//Boss音效
+        [SerializeField] private AudioClip _audioClip;//击败后场景音效
 
         private void Start()
         {
@@ -48,14 +48,18 @@ namespace BigBoss
 
         private void Update()
         {
-            if (BossLength == 0 && !_gameOver)
+            if(_gameOver)
+            {
+                return;
+            }
+            else if (BossLength == 0)
             {
                 _gameOver = true;
                 _hpText.text = "恭喜过关,耗时" + (int)_allTime + "秒";
                 _audioSource.clip = _audioClip;
                 _audioSource.Play();
             }
-            else if(!_gameOver)
+            else
             {
                 UpUi();
             }

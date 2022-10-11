@@ -15,6 +15,7 @@ namespace BigBoss
         private float _changeDirectionWaitTime = 0f;//获取新移动变量倒计时
         private float _headSpeed = 5f;
         private float _angleSpeed = 0.1f;
+        //private float _ownRotation = 0f;
         private float _minJudgeRotate = 0.1f;//旋转角度最小判定弧度
         private float _maxSpeed = 20f;
         private float _minSpeed = 8f;
@@ -22,21 +23,23 @@ namespace BigBoss
         private float _minAngleSpeed = 0.005f;
         private float _keepRunMinTime = 2f;
         private float _keepRunMaxTime = 8f;
+        //private float _minOwnRotation = -2f;
+        //private float _maxOwnRotation = 2f;
         private Vector3 _headTarget = new Vector3(5.3f, 12.2f, 8.5f);//目标点位
         private float _maxRange = 2500f;//与玩家最远距离的平方
         private bool _needChangeDirection = false;//当前需要转向
         private Transform _playerTransform;//玩家位置
 
         public GameObject _nextBody { get; set; }//头的下一个身子
-        private int _headHp = 8;
+        [SerializeField] private int _headHp = 5;
         public bool BeShoot { get; set; }
         private const float AllChangeColor = 0.3f;//色彩变化总量
-        private float _changeColor;//色彩变化单位量
+        private float _changeColor;//色彩变化最小单位量
 
 
         private void Start()
         {
-            _playerTransform = PlayerMove.GetPlayerMove.transform;
+            _playerTransform = PlayerMove.GetPlayerTransform;
             BeShoot = false;
             _changeColor = AllChangeColor / _headHp;
         }
@@ -62,11 +65,12 @@ namespace BigBoss
                 transform.rotation = Quaternion.Slerp(transform.rotation, rotate, _angleSpeed);
         }
 
-        private void RunHead()//移动
+        private void RunHead()//移动+自转
         {
             transform.position += transform.forward * Time.deltaTime * _headSpeed;
             //上升减速,下降加速,控制在设定速度直之间
             _headSpeed += _headSpeed > _minSpeed && _headSpeed < _maxSpeed ? (-1f) * transform.forward.y * 0.1f : 0f;
+            //transform.Rotate(0f, 0f, _ownRotation, Space.Self);
         }
 
         private void HasNewHeadMoveVariable()//获取新运动参数
@@ -79,6 +83,7 @@ namespace BigBoss
             _changeDirectionWaitTime = Random.Range(_keepRunMinTime, _keepRunMaxTime);
             _headSpeed = Random.Range(_minSpeed, _maxSpeed);
             _angleSpeed = Random.Range(_minAngleSpeed, _maxAngleSpeed);
+            //_ownRotation = Random.Range(_minOwnRotation, _maxOwnRotation);
             _runDirection = (_headTarget - transform.position).normalized;//归一化当前方向
             _runDirection = (_runDirection + new Vector3(0f, Random.Range(-0.8f, 0.8f), 0f)).normalized;//对y方向增加随机值，再归一化
         }
@@ -107,7 +112,7 @@ namespace BigBoss
                     Destroy(gameObject);//销毁头
                 }
             }
-            if(_nextBody==null)//下一个身体被玩家摧毁。头自动销毁.玩家摧毁的位置会生成新的头
+            if(_nextBody==null)//下一个身体被玩家摧毁，头自动销毁。玩家摧毁的位置会生成新的头
             {
                 Destroy(gameObject);
             }
