@@ -7,6 +7,7 @@ using UnityEngine;
 namespace BigBoss
 {
 
+
     public class Body : MonoBehaviour
     {
         /// <summary>
@@ -20,23 +21,21 @@ namespace BigBoss
         private Transform _transform;//自身组件
 
         [NonSerialized] public bool BeShoot;
-        [SerializeField] private int _bodyHp = 3;
         [SerializeField] private GameObject _headPrefab;//头部预制体，父节点被摧毁，创建头为父节点
 
-        private const float AllChangeColor = 0.3f;//色彩变化总值
-        private float _changeColor;//色彩变化最小单位量
+        private const float _changeColor = 0.1f;//色彩变化最小单位量
 
         private void Start()
         {
             _transform = transform;
             BeShoot = false;
-            _changeColor = AllChangeColor / _bodyHp;
         }
 
         private void Update()
         {
+            //CreateNewHead();
+            //ReduceHp();
             CreateNewHead();
-            ReduceHp();
             MoveBodyByPrevious();
         }
         private void OnDestroy()
@@ -63,40 +62,52 @@ namespace BigBoss
             return (ParentHead.transform.position - NextPoint).sqrMagnitude > _twoBodyDistance && _historyPoints.Count > 0 && _historyRotas.Count > 0;
         }
 
-        private void ReduceHp()//生命值减少
-        {
-            if(BeShoot)
-            {
-                _bodyHp--;
-                BeShoot = false;
-                ChangeColor();
+        //private void ReduceHp()//生命值减少
+        //{
+        //    if(BeShoot)
+        //    {
+        //        _bodyHp--;
+        //        BeShoot = false;
+        //        ChangeColor();
 
-            }
-            if(_bodyHp<=0)
-            {
-                Destroy(gameObject);
-            }
-        }
+        //    }
+        //    if(_bodyHp<=0)
+        //    {
+        //        Destroy(gameObject);
+        //    }
+        //}
 
-        private void ChangeColor()//变红
-        {
-            MeshRenderer[] SonsColor= gameObject.GetComponentsInChildren<MeshRenderer>();
-            for(int i = 0; i < SonsColor.Length; i++)
-                SonsColor[i].material.color += new Color(_changeColor, -_changeColor, -_changeColor);
-        }
+        //private void ChangeColor()//变红
+        //{
+        //    MeshRenderer[] SonsColor= gameObject.GetComponentsInChildren<MeshRenderer>();
+        //    for(int i = 0; i < SonsColor.Length; i++)
+        //        SonsColor[i].material.color += new Color(_changeColor, -_changeColor, -_changeColor);
+        //}
 
         private void CreateNewHead()//上节点被销毁，创建新的头并双向绑定
         {
-            if(ParentHead==null)
+            if (ParentHead == null)
             {
                 GameObject NewHead = Instantiate(_headPrefab, _transform.position, _transform.rotation);
                 ParentHead = NewHead;
                 var HeadScript = NewHead.GetComponent<Head>();
-                if(HeadScript != null)
+                if (HeadScript != null)
                 {
                     HeadScript._nextBody = gameObject;
                 }
             }
+        }
+
+        public void NotifyDead()
+        {
+            Destroy(gameObject);
+        }
+
+        public void NotifyDamange()
+        {
+            MeshRenderer[] SonsColor = gameObject.GetComponentsInChildren<MeshRenderer>();
+            for (int i = 0; i < SonsColor.Length; i++)
+                SonsColor[i].material.color += new Color(_changeColor, -_changeColor, -_changeColor);
         }
     }
 

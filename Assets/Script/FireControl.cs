@@ -6,6 +6,10 @@ using UnityEngine.UI;
 
 namespace BigBoss
 {
+    public interface IHitable
+    {
+        void Hit();
+    }
     /// <summary>
     /// 开火控制
     /// </summary>
@@ -62,20 +66,10 @@ namespace BigBoss
             //击中判断，并执行对应效果
             if(Physics.Raycast(_firePointTransform.position,_firePointTransform.forward,out FireHit,_maxFireRange))
             {
-                var IsBody = FireHit.collider.gameObject.GetComponent<Body>();
-                var IsHead = FireHit.collider.gameObject.GetComponent<Head>();
-                //头或身体的射击判断
-                if (IsBody != null)
+                var hit = FireHit.collider.GetComponent<IHitable>();
+                if (hit != null)
                 {
-                    IsBody.BeShoot = true;
-                }
-                else if (IsHead != null)
-                {
-                    IsHead.BeShoot = true;
-                }
-                //击中准心变红
-                if(IsBody != null || IsHead != null)
-                {
+                    hit.Hit();
                     _crossHairColor = Color.red;
                     ChangeCrossHairColor(CrossHair, _crossHairColor);
                     _changeColorTime = KeepChangeColorMaxTime;
@@ -85,12 +79,12 @@ namespace BigBoss
 
         private void ChangeCrossHairColor(GameObject ParentGameObject,Color NeedChange)//改变所有子物体图片颜色
         {
-            Image[] Son= ParentGameObject.GetComponentsInChildren<Image>();
+            Image[] son= ParentGameObject.GetComponentsInChildren<Image>();
             if(CrossHair!=null)
             {
-                for(int i=0;i<Son.Length;i++)
+                for(int i=0;i<son.Length;i++)
                 {
-                    Son[i].color = NeedChange;
+                    son[i].color = NeedChange;
                 }
             }
         }
