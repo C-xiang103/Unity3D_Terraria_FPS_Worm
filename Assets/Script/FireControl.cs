@@ -58,7 +58,7 @@ namespace BigBoss
             }
         }
 
-        private void GunFire()
+        private void GunFire()//开火
         {
             RaycastHit FireHit;
             _fireEffect.Play();
@@ -80,7 +80,7 @@ namespace BigBoss
         private void ChangeCrossHairColor(GameObject ParentGameObject,Color NeedChange)//改变所有子物体图片颜色
         {
             Image[] son= ParentGameObject.GetComponentsInChildren<Image>();
-            if(CrossHair!=null)
+            if(son != null)
             {
                 for(int i=0;i<son.Length;i++)
                 {

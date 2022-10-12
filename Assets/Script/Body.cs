@@ -14,11 +14,10 @@ namespace BigBoss
         /// Boss身体跟随移动
         /// 通过队列实现子跟随父移动轨迹运动
         /// </summary>
-        public event Action OnNotifyDead;//被标记死亡
         private Queue<Vector3> _historyPoints = new Queue<Vector3>();//父节点历史点位队列
         private Queue<Quaternion> _historyRotas = new Queue<Quaternion>();//父节点历史方向队列
-        [NonSerialized] public Head ParentHead;//该节身体的头
-        [NonSerialized] public Body ParentBody;
+        [NonSerialized] public Head ParentHead;//该节身体的上个部位是头
+        [NonSerialized] public Body ParentBody;//该节身体的上个部位是体
         [NonSerialized] public Body NextBody;//下一个身体
 
         private float _twoBodyDistance = 2.7f;//前后节点的间隔距离
@@ -29,7 +28,7 @@ namespace BigBoss
 
         private const float _changeColor = 0.1f;//色彩变化最小单位量
 
-        public Transform GetParentTransform()
+        private Transform GetParentTransform()
         {
             if(ParentHead != null)
             {
@@ -60,15 +59,19 @@ namespace BigBoss
 
         private void MoveBodyByPrevious()//跟随移动
         {
+            var newTransform = GetParentTransform();
             //父节点位置信息入队
-            _historyPoints.Enqueue(GetParentTransform().position);
-            _historyRotas.Enqueue(GetParentTransform().rotation);
-
-            while (NeedUpDatePoint(_transform.position))//判断是否需要更新子节点位置
+            if (newTransform!=null)
             {
-                //更新子节点位置
-                _transform.position = _historyPoints.Dequeue();
-                _transform.rotation = _historyRotas.Dequeue();
+                _historyPoints.Enqueue(newTransform.position);
+                _historyRotas.Enqueue(newTransform.rotation);
+
+                while (NeedUpDatePoint(_transform.position))//判断是否需要更新子节点位置
+                {
+                    //更新子节点位置
+                    _transform.position = _historyPoints.Dequeue();
+                    _transform.rotation = _historyRotas.Dequeue();
+                }
             }
         }
 
@@ -79,10 +82,6 @@ namespace BigBoss
 
         public void NotifyDead()//生命值小于0，自己被摧毁
         {
-            //if(OnNotifyDead != null)
-            //{
-            //    OnNotifyDead.Invoke();
-            //}
             if (NextBody != null)//告诉下个身体，它的上个身体被摧毁
             {
                 NextBody.LastBodyBeDestroy();
@@ -94,27 +93,20 @@ namespace BigBoss
             Destroy(gameObject);//摧毁自身
         }
 
-        public void NotifyDamange()
-        {
-            MeshRenderer[] SonsColor = gameObject.GetComponentsInChildren<MeshRenderer>();
-            for (int i = 0; i < SonsColor.Length; i++)
-                SonsColor[i].material.color += new Color(_changeColor, -_changeColor, -_changeColor);
-        }
-
         public void HeadBeDestry()//上个头被摧毁
         {
             Destroy(gameObject);
+            if (NextBody != null)//告诉下个身体，它的上个身体被摧毁
+            {
+                NextBody.LastBodyBeDestroy();
+            }
         }
 
         public void LastBodyBeDestroy()//上个身体被摧毁
         {
             Head NewHead = Instantiate(_headPrefab, _transform.position, _transform.rotation);
+            NewHead.NextBody = gameObject.GetComponent<Body>();
             ParentHead = NewHead;
-            var HeadScript = NewHead;
-            if (HeadScript != null)
-            {
-                HeadScript.NextBody = gameObject.GetComponent<Body>();
-            }
         }
     }
 

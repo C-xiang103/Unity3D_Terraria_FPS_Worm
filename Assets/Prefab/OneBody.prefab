@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 452525356411043133}
   - component: {fileID: 8884812107987960538}
   - component: {fileID: -4955127566108079853}
+  - component: {fileID: 7828413921250109823}
   m_Layer: 0
   m_Name: OneBody
   m_TagString: Untagged
@@ -120,9 +121,9 @@ MonoBehaviour:
   _onDamage:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 452525356411043133}
-        m_TargetAssemblyTypeName: BigBoss.Body, Assembly-CSharp
-        m_MethodName: NotifyDamange
+      - m_Target: {fileID: 7828413921250109823}
+        m_TargetAssemblyTypeName: HpChangeColor, Assembly-CSharp
+        m_MethodName: ChangeColor
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -132,6 +133,21 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &7828413921250109823
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1038806166608455037}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25f5eab3648f5d54d858edb342d390a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rgbR: 0.07
+  _rgbG: -0.07
+  _rgbB: -0.07
 --- !u!1001 &7100042597594430778
 PrefabInstance:
   m_ObjectHideFlags: 0

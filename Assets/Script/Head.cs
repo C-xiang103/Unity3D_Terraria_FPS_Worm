@@ -41,10 +41,10 @@ namespace BigBoss
 
         private void Update()
         {
-            RotateHead();
-            RunHead();
-            HasNewHeadMoveVariable();
-            JustChangeDirection();
+            RotateHead();//转
+            RunHead();//动
+            HasNewHeadMoveVariable();//更新所有运动
+            JustChangeDirection();//只更新方向
             _headTarget = _playerTransform.position;//更新目标
         }
 
@@ -101,22 +101,9 @@ namespace BigBoss
         {
             if(NextBody!=null)//告诉下个身体，它的头被摧毁
             {
-                var body=NextBody;
-                if(body!=null)
-                {
-                    body.HeadBeDestry();
-                }
+                NextBody.HeadBeDestry();
             }
             Destroy(gameObject);//摧毁头
-        }
-
-        public void NotifyDamange()
-        {
-            MeshRenderer[] SonsColor = gameObject.GetComponentsInChildren<MeshRenderer>();
-            for (int i = 0; i < SonsColor.Length; i++)
-            {
-                SonsColor[i].material.color += new Color(ChangeColor, -ChangeColor, -ChangeColor);
-            }
         }
     }
 

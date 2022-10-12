@@ -15,8 +15,8 @@ namespace BigBoss
         public static Transform GetPlayerTransform => _playerTransform;
 
         [SerializeField] private GameObject PlayerView;//摄像机
-        private float _horizontalRotateSensitivity = 300f;//鼠标灵敏度
-        private float _verticalRotateSensitivity = 200f;
+        private float _horizontalRotateSensitivity = 100f;//鼠标灵敏度
+        private float _verticalRotateSensitivity = 80f;
         private float _maxDepressionAngle = 60f;//俯仰限制
         private float _maxElevationAngle = 80f;
         private float _moveSpeed = 5f;
@@ -44,10 +44,6 @@ namespace BigBoss
             View();
             Jump();
             UpDateMiniMapPosition();
-        }
-
-        private void FixedUpdate()
-        {
             Move();
         }
 
@@ -78,8 +74,8 @@ namespace BigBoss
             float v = Input.GetAxis("Vertical");
             float h = Input.GetAxis("Horizontal");
 
-            transform.Translate(Vector3.forward * v * 0.02f * _moveSpeed);
-            transform.Translate(Vector3.right * h * 0.02f * _moveSpeed);
+            transform.Translate(Vector3.forward * v * Time.deltaTime * _moveSpeed);
+            transform.Translate(Vector3.right * h * Time.deltaTime * _moveSpeed);
         }
 
         private void Jump()
