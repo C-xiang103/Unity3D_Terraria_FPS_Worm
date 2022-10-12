@@ -29,27 +29,23 @@ namespace BigBoss
             _hpText = _hpObject.GetComponent<Text>();
 
             BossLength = MaxBodyCount;
-            Body body = _firstHead;
+            Body lastCreatedBody = null;
             for (int i = 0; i < MaxBodyCount; i++)
             {
-                Body TheBody = Instantiate(_bodyPrefab);
+                Body newBody = Instantiate(_bodyPrefab);
 
-                if(i != 0)//绑定LastBody->ThisBody 排除第一个头
+                if (i == 0) //绑定LastBody->ThisBody 排除第一个头
                 {
-                    body.NextBody = TheBody;
+                    _firstHead.NextBody = newBody;
+                    newBody.ParentHead = _firstHead;
+                }
+                else
+                {
+                    newBody.ParentBody = lastCreatedBody;
+                    lastCreatedBody.NextBody = newBody;
                 }
 
-                TheBody.ParentHead = body;//绑定ThisBody->HeadBody
-
-                body = TheBody;
-                if(i==0)
-                {
-                    var FirstHeadNextBody = _firstHead.GetComponent<Head>();//绑定Head->firstBody
-                    if(FirstHeadNextBody != null)
-                    {
-                        FirstHeadNextBody.NextBody = TheBody;
-                    }
-                }
+                lastCreatedBody = newBody;
             }
         }
 

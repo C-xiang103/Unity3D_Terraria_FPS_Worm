@@ -18,7 +18,9 @@ namespace BigBoss
         private Queue<Vector3> _historyPoints = new Queue<Vector3>();//父节点历史点位队列
         private Queue<Quaternion> _historyRotas = new Queue<Quaternion>();//父节点历史方向队列
         [NonSerialized] public Head ParentHead;//该节身体的头
+        [NonSerialized] public Body ParentBody;
         [NonSerialized] public Body NextBody;//下一个身体
+
         private float _twoBodyDistance = 2.7f;//前后节点的间隔距离
         private Transform _transform;//自身组件
 
@@ -27,6 +29,19 @@ namespace BigBoss
 
         private const float _changeColor = 0.1f;//色彩变化最小单位量
 
+        public Transform GetParentTransform()
+        {
+            if(ParentHead != null)
+            {
+                return ParentHead.transform;
+            }
+            else if(ParentBody != null)
+            {
+                return ParentBody.transform;
+            }
+            return null;
+            
+        }
         private void Start()
         {
             _transform = transform;
@@ -46,8 +61,8 @@ namespace BigBoss
         private void MoveBodyByPrevious()//跟随移动
         {
             //父节点位置信息入队
-            _historyPoints.Enqueue(ParentHead.transform.position);
-            _historyRotas.Enqueue(ParentHead.transform.rotation);
+            _historyPoints.Enqueue(GetParentTransform().position);
+            _historyRotas.Enqueue(GetParentTransform().rotation);
 
             while (NeedUpDatePoint(_transform.position))//判断是否需要更新子节点位置
             {
@@ -59,31 +74,23 @@ namespace BigBoss
 
         private bool NeedUpDatePoint(Vector3 NextPoint)//需要更新全部运行信息
         {
-            return (ParentHead.transform.position - NextPoint).sqrMagnitude > _twoBodyDistance && _historyPoints.Count > 0 && _historyRotas.Count > 0;
+            return (GetParentTransform().position - NextPoint).sqrMagnitude > _twoBodyDistance && _historyPoints.Count > 0 && _historyRotas.Count > 0;
         }
 
         public void NotifyDead()//生命值小于0，自己被摧毁
         {
-            if(OnNotifyDead != null)
+            //if(OnNotifyDead != null)
+            //{
+            //    OnNotifyDead.Invoke();
+            //}
+            if (NextBody != null)//告诉下个身体，它的上个身体被摧毁
             {
-                OnNotifyDead.Invoke();
+                NextBody.LastBodyBeDestroy();
             }
-            //if(NextBody != null)//告诉下个身体，它的上个身体被摧毁
-            //{
-            //    var nextBody = NextBody.GetComponent<Body>();
-            //    if(nextBody!=null)
-            //    {
-            //        nextBody.LastBodyBeDestroy();
-            //    }
-            //}
-            //if (ParentHead != null)//告诉上个头，它的下个身体被摧毁
-            //{
-            //    var head = ParentHead.GetComponent<Head>();
-            //    if (head != null)
-            //    {
-            //        head.NextBodyDestroy();
-            //    }
-            //}
+            if (ParentHead != null)//告诉上个头，它的下个身体被摧毁
+            {
+                ParentHead.NextBodyDestroy();
+            }
             Destroy(gameObject);//摧毁自身
         }
 
