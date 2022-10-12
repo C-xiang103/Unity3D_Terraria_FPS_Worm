@@ -14,14 +14,16 @@ namespace BigBoss
         /// Boss身体跟随移动
         /// 通过队列实现子跟随父移动轨迹运动
         /// </summary>
+        public event Action OnNotifyDead;//被标记死亡
         private Queue<Vector3> _historyPoints = new Queue<Vector3>();//父节点历史点位队列
         private Queue<Quaternion> _historyRotas = new Queue<Quaternion>();//父节点历史方向队列
-        [NonSerialized] public GameObject ParentHead;//该节身体的头
+        [NonSerialized] public Head ParentHead;//该节身体的头
+        [NonSerialized] public Body NextBody;//下一个身体
         private float _twoBodyDistance = 2.7f;//前后节点的间隔距离
         private Transform _transform;//自身组件
 
         [NonSerialized] public bool BeShoot;
-        [SerializeField] private GameObject _headPrefab;//头部预制体，父节点被摧毁，创建头为父节点
+        [SerializeField] private Head _headPrefab;//头部预制体，父节点被摧毁，创建头为父节点
 
         private const float _changeColor = 0.1f;//色彩变化最小单位量
 
@@ -33,14 +35,12 @@ namespace BigBoss
 
         private void Update()
         {
-            //CreateNewHead();
-            //ReduceHp();
-            CreateNewHead();
             MoveBodyByPrevious();
         }
         private void OnDestroy()
         {
             CreateBody.BossLength--;
+            
         }
 
         private void MoveBodyByPrevious()//跟随移动
@@ -57,50 +57,34 @@ namespace BigBoss
             }
         }
 
-        private bool NeedUpDatePoint(Vector3 NextPoint)
+        private bool NeedUpDatePoint(Vector3 NextPoint)//需要更新全部运行信息
         {
             return (ParentHead.transform.position - NextPoint).sqrMagnitude > _twoBodyDistance && _historyPoints.Count > 0 && _historyRotas.Count > 0;
         }
 
-        //private void ReduceHp()//生命值减少
-        //{
-        //    if(BeShoot)
-        //    {
-        //        _bodyHp--;
-        //        BeShoot = false;
-        //        ChangeColor();
-
-        //    }
-        //    if(_bodyHp<=0)
-        //    {
-        //        Destroy(gameObject);
-        //    }
-        //}
-
-        //private void ChangeColor()//变红
-        //{
-        //    MeshRenderer[] SonsColor= gameObject.GetComponentsInChildren<MeshRenderer>();
-        //    for(int i = 0; i < SonsColor.Length; i++)
-        //        SonsColor[i].material.color += new Color(_changeColor, -_changeColor, -_changeColor);
-        //}
-
-        private void CreateNewHead()//上节点被销毁，创建新的头并双向绑定
+        public void NotifyDead()//生命值小于0，自己被摧毁
         {
-            if (ParentHead == null)
+            if(OnNotifyDead != null)
             {
-                GameObject NewHead = Instantiate(_headPrefab, _transform.position, _transform.rotation);
-                ParentHead = NewHead;
-                var HeadScript = NewHead.GetComponent<Head>();
-                if (HeadScript != null)
-                {
-                    HeadScript._nextBody = gameObject;
-                }
+                OnNotifyDead.Invoke();
             }
-        }
-
-        public void NotifyDead()
-        {
-            Destroy(gameObject);
+            //if(NextBody != null)//告诉下个身体，它的上个身体被摧毁
+            //{
+            //    var nextBody = NextBody.GetComponent<Body>();
+            //    if(nextBody!=null)
+            //    {
+            //        nextBody.LastBodyBeDestroy();
+            //    }
+            //}
+            //if (ParentHead != null)//告诉上个头，它的下个身体被摧毁
+            //{
+            //    var head = ParentHead.GetComponent<Head>();
+            //    if (head != null)
+            //    {
+            //        head.NextBodyDestroy();
+            //    }
+            //}
+            Destroy(gameObject);//摧毁自身
         }
 
         public void NotifyDamange()
@@ -108,6 +92,22 @@ namespace BigBoss
             MeshRenderer[] SonsColor = gameObject.GetComponentsInChildren<MeshRenderer>();
             for (int i = 0; i < SonsColor.Length; i++)
                 SonsColor[i].material.color += new Color(_changeColor, -_changeColor, -_changeColor);
+        }
+
+        public void HeadBeDestry()//上个头被摧毁
+        {
+            Destroy(gameObject);
+        }
+
+        public void LastBodyBeDestroy()//上个身体被摧毁
+        {
+            Head NewHead = Instantiate(_headPrefab, _transform.position, _transform.rotation);
+            ParentHead = NewHead;
+            var HeadScript = NewHead;
+            if (HeadScript != null)
+            {
+                HeadScript.NextBody = gameObject.GetComponent<Body>();
+            }
         }
     }
 

@@ -27,10 +27,13 @@ namespace BigBoss
         private bool _needChangeDirection = false;//当前需要转向
         private Transform _playerTransform;//玩家位置
 
-        public GameObject _nextBody { get; set; }//头的下一个身子
+        public Body NextBody { get; set; }//头的下一个身子
         private const float ChangeColor = 0.05f;//色彩变化最小单位量
 
-
+        public void Init()
+        {
+            
+        }
         private void Start()
         {
             _playerTransform = PlayerMove.GetPlayerTransform;
@@ -38,7 +41,6 @@ namespace BigBoss
 
         private void Update()
         {
-            ReduceHp();
             RotateHead();
             RunHead();
             HasNewHeadMoveVariable();
@@ -90,18 +92,22 @@ namespace BigBoss
         }
 
 
-        private void ReduceHp()//生命值降低
+        public void NextBodyDestroy()//下一个身体被玩家摧毁
         {
-            if(_nextBody==null)//下一个身体被玩家摧毁，头自动销毁。玩家摧毁的位置会生成新的头
-            {
-                Destroy(gameObject);
-            }
+            Destroy(gameObject);
         }
 
-        public void NotifyDead()
+        public void NotifyDead()//生命值小于0，自身被摧毁
         {
-            Destroy(_nextBody);//销毁下一个身体。下一个身体的位置会自动创建头
-            Destroy(gameObject);//销毁头
+            if(NextBody!=null)//告诉下个身体，它的头被摧毁
+            {
+                var body=NextBody;
+                if(body!=null)
+                {
+                    body.HeadBeDestry();
+                }
+            }
+            Destroy(gameObject);//摧毁头
         }
 
         public void NotifyDamange()
