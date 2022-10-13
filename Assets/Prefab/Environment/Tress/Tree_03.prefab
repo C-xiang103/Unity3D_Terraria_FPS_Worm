@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: -3404363935736566698}
   - component: {fileID: 377913798389439716}
   - component: {fileID: -7456164727160443426}
+  - component: {fileID: -291831274897982396}
   m_Layer: 0
   m_Name: Tree_03
   m_TagString: Untagged
@@ -170,4 +171,31 @@ MonoBehaviour:
         m_CallState: 2
   _onDamage:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: -291831274897982396}
+        m_TargetAssemblyTypeName: HpChangeColor, Assembly-CSharp
+        m_MethodName: ChangeColor
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &-291831274897982396
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6941765000743290380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25f5eab3648f5d54d858edb342d390a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rgbR: -0.25
+  _rgbG: -0.25
+  _rgbB: -0.25

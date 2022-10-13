@@ -15,8 +15,8 @@ namespace BigBoss
         public static Transform GetPlayerTransform => _playerTransform;
 
         [SerializeField] private GameObject PlayerView;//摄像机
-        private float _horizontalRotateSensitivity = 100f;//鼠标灵敏度
-        private float _verticalRotateSensitivity = 80f;
+        [SerializeField] private float _horizontalRotateSensitivity = 100f;//鼠标灵敏度
+        [SerializeField] private float _verticalRotateSensitivity = 80f;
         private float _maxDepressionAngle = 60f;//俯仰限制
         private float _maxElevationAngle = 80f;
         private float _moveSpeed = 5f;
