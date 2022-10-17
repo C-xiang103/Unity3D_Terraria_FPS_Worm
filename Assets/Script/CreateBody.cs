@@ -15,10 +15,9 @@ namespace BigBoss
         [SerializeField] private Body _bodyPrefab;//身体预制体
         [SerializeField] private Head _firstHead;//第一个头
         
-        private const int MaxBodyCount = 30;//设置Boss初始长度
+        private const int MaxBodyCount = 50;//设置Boss初始长度
         [NonSerialized] public static int BossLength;//Boss当前长度
-        [SerializeField] private GameObject _hpObject;//生命值显示
-        private Text _hpText;//生命值文本
+        [SerializeField]private Text _hpText;//生命值文本
         private float _allTime = 0f;//游戏时长
         private bool _gameOver = false;//击败Boss
         [SerializeField] private AudioSource _audioSource;//Boss音效
@@ -26,8 +25,6 @@ namespace BigBoss
 
         private void Start()
         {
-            _hpText = _hpObject.GetComponent<Text>();
-
             BossLength = MaxBodyCount;
             Body lastCreatedBody = null;
             for (int i = 0; i < MaxBodyCount; i++)

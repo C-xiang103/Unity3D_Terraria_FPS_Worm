@@ -21,7 +21,7 @@ namespace BigBoss
         private const float FireRate = 0.1f;//每发子弹射出间隔
         private float _fireTime = 0f;//开火冷却时间
         [SerializeField] private ParticleSystem _fireEffect;//开火粒子特效
-        private float _bulletsNumber = 500;//子弹总量
+        private float _bulletsNumber = 2000;//子弹总量
         [SerializeField] private Text _bulletsNumberText;//子弹文本
         [SerializeField] private GameObject CrossHair;//准心
         private const float KeepChangeColorMaxTime = 0.1f;//保持准心颜色变化的最大时间
